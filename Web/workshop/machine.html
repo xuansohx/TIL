@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>workshop</title>
+	<style></style>
+	<script>
+
+		function add() { // 선택 버튼을 누르면 결과 값이 출력이 됨
+			// 선택한 음료
+			var drink = document.myform.drink;
+			var cd = "";
+			for (var i in drink) {
+				if (drink[i].checked) {
+					cd += drink[i].value + "  ";
+					// 여러 개 선택할 가능성을 염두하여 배열에 저장하여 한꺼번에 출력
+				};
+			};
+
+			document.getElementById('choose_drink').innerText = cd;
+
+			// 선택한 지불 방법
+			var pay = document.myform.pay.value;
+			if (pay != '' || pay != null) {
+				document.getElementById('choose_pay').innerText = pay;
+			}
+		};
+		
+		// 선택 값을 초기화하기 → 이전 결과 값 지우기
+		function re() {
+			document.getElementById('choose_drink').innerText = " ";
+			document.getElementById('choose_pay').innerText = " ";
+		};
+
+	</script>
+</head>
+
+<body>
+	<h3>음료수자판기 → 선택한 결과 값 출력하기</h3>
+
+	<form name="myform">
+		<!-- 체크박스를 통하여 음료수 선택 -->
+		음료수 :
+		포카리<input type="checkbox" name="drink" value="포카리">
+		게토레이<input type="checkbox" name="drink" value="게토레이">
+		2%<input type="checkbox" name="drink" value="2%"><br>
+
+		<!-- 옵션을 선택하여 지불방법 선택 -->
+		지불 방법 :
+		<select name="pay">
+			<option value="">선택하기</option>
+			<option value="카드">카드</option>
+			<option value="현금">현금</option>
+		</select><br>
+
+		<!-- 버튼에 대한 정의 -->
+		<input type="reset" value="RESET" onclick="re();">
+		<input type="button" value="선택" onclick="add();">
+
+		<h3></h3>
+
+		<!-- 결과 값 출력 -->
+		선택한 음료 :
+		<a id="choose_drink"></a><br>
+		선택한 지불 방법 :
+		<a id="choose_pay"></a>
+
+	</form>
+</body>
+
+</html>

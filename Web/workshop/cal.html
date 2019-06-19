@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>workshop</title>
+	<style>
+		/* 결과가 출력되는 화면에 대한 style 정의 */
+		#display {
+			width: 300px;
+			height: 30px;
+			background-color: lightgray;
+			text-align: right;
+
+		}
+
+		/* 전체 table의 크기 지정 → 계산기의 크기 */
+		table {
+			width: 300px;
+			height: 120px;
+		}
+
+		/* 버튼의 크기 */
+		td {
+			border: 1px solid black;
+			background: #EBFBFF;
+			text-align: center;
+			vertical-align: middle;
+		}
+
+		/* clear를 위한 'C'버튼에 대한  style 정의 */
+		#clear {
+			width: 300px;
+			height: 30px;
+			background-color: #BECDFF;
+			text-align: center;
+		}
+	</style>
+
+	<script>
+		/* 각 연산 기호의 값을 받아서 저장 */
+		function sum() {
+			document.getElementById('display').value += '+';
+		};
+		function sub() {
+			document.getElementById('display').value += '-';
+		};
+		function mul() {
+			document.getElementById('display').value += '*';
+		};
+		function div() {
+			document.getElementById('display').value += '/';
+		};
+
+		/* 버튼을 누르면 각 버튼의 값을 display에 저장해둠*/
+		function btn(n) {
+			document.getElementById('display').value += n;
+		};
+
+		/* '='을 누르면 미리 저장해둔 값을 바탕으로 eval 함수에 의해 계산이 됨 */
+		function cal() {
+			var action = document.getElementById('display').value;
+			result = eval(action); /* 문자열을 수식으로 인식하여 계산하는 함수 eval 사용 */
+			document.getElementById('display').value = result;
+		};
+
+	</script>
+</head>
+
+<body>
+	<h3>workshop : make Calculator</h3>
+	<form>
+        <!-- 결과가 출력되는  display 창과 clear 버튼 만듦 -->
+		<div id="window"><input readonly="readonly" id="display"></div>
+		<button type="reset" id="clear">C</button> <!-- type을 reset으로 사용하여 별도의 함수 지정 안 함 -->
+
+		<table> <!-- table을 이용하여 계산기의 숫자와 연산기호 만듦 -->
+			<tbody>
+				<tr>
+					<td value="+" id="sum" onclick="sum();">+</td> <!-- sum -->
+					<td value="-" id="sub" onclick="sub();">-</td> <!-- subtraction -->
+					<td value="x" id="mul" onclick="mul();">x</td> <!-- multiplication -->
+					<td value="/" id="div" onclick="div();">/</td> <!-- division -->
+				</tr>
+
+				<tr>
+					<td value="1" id="btn" onclick="btn('1')">1</td>
+					<td value="2" id="btn" onclick="btn('2')">2</td>
+					<td value="3" id="btn" onclick="btn('3')">3</td>
+					<td value="0" id="btn" onclick="btn('0')">0</td>
+				</tr>
+
+				<tr>
+					<td value="4" id="btn" onclick="btn('4')">4</td>
+					<td value="5" id="btn" onclick="btn('5')">5</td>
+					<td value="6" id="btn" onclick="btn('6')">6</td>
+					<td rowspan="2" value="=" onclick="cal();">=</td>
+				</tr>
+
+				<tr>
+					<td value="7" id="btn" onclick="btn(7)">7</td>
+					<td value="8" id="btn" onclick="btn(8)">8</td>
+					<td value="9" id="btn" onclick="btn(9)">9</td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</body>
+
+</html>
