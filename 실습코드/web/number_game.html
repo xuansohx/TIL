@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="EUC-KR">
+	<title>Insert title here</title>
+	<script>
+		// 기본은 0 ~ 1 미만 → 컴퓨터가 출력해야 하는 수는 1~100
+		var cnum = Math.floor(Math.random() * 100 + 1); /* 컴퓨터가 생성한 난수 (비교해야 하는 값) */
+		alert(cnum); /* 난수출력확인용 */
+		var count = 0; /* 숫자를 비교한 횟수(추측횟수) */
+
+		function guess() {
+			result = ""; // 힌트(결과)출력을 위한 result 변수 선언
+			var number = parseInt(document.getElementById('user').value); /* user가 입력한 값을 가져와 n에 저장함 */
+			/* alert(n); */
+			count++; /* 추측횟수를 증가 */
+
+			if (cnum == number) result = "성공입니다."; /* user의 값과 컴퓨터의 난수가 같으면 성공 */
+			else if (cnum > number) result = "숫자를 더 높여주세요."; /* 컴퓨터의 난수(cnum)의 값이 더 큰 경우 */
+			else result = "숫자를 낮춰주세요."; /* 컴퓨터의 난수와 같지도 않고, 크지도 않은 경우 → 작은 경우 */
+
+			document.getElementById('result').value = result;
+			document.getElementById('count').value = count;
+
+			return true;
+
+		}
+	</script>
+</head>
+
+<body>
+	<!-- 게임 설명 및 화면 구성 -->
+	<h1>숫자 맞추기 게임</h1><br>
+	<a> 이 게임은 컴퓨터가 생성한 숫자를 맞추는 게임입니다.<br>
+		숫자는 1부터 100 사이에 있습니다.</a><br><br>
+
+	<form>
+		<!-- 사용자가 숫자를 입력하는 창과 입력한 숫자와 컴퓨터의 숫자를 비교할 수 있는 '확인'버튼 구현
+                             확인 버튼을 누르면 숫자를 비교하는 함수인 guess가 동작하며 게임이 진행 -->
+		숫자:&nbsp;<input type="text" id="user">&nbsp;<input type="button" value="확인" onclick="guess();"><br>
+		추측횟수:&nbsp;<input type="text" id="count">&nbsp;힌트:&nbsp;<input type="text" id="result">
+		<!-- 함수랑 변수 이름 같게 하지 않도록 주의 -->
+	</form>
+</body>
+
+</html>

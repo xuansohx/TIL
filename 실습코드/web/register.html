@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<!-- ID와 PWD, PWD 확인, HINT(옵션선택) 체크박스로 HOBBY, AGE 입력 → ID is Mandatory 옆으로 출력되도록 -->
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<style></style>
+<script>
+
+
+function register(f) { /* body 부분 전체를 집어 넣음 */
+	var id = f.id.value; /* f에서 name(id) 가져오기 → 함수에서 사용*/
+	var pwd = f.pwd.value; /* 값 */
+	var pwdcheck = f.pwdcheck.value;
+	var hint = f.hint.value;
+	var hobby = f.hobby.value;
+	var age = f.age.value;
+	
+	var i = document.getElementById('i'); /* HTML에서 데이터 가져온 후 전송할 수 있음 */
+	var p = document.getElementById('p');
+	var pc = document.getElementById('pc');
+	var h = document.getElementById('h');
+	var hb = document.getElementById('hb');
+	var a = document.getElementById('a');
+	
+if (id == '' || id == null) { /* 아이디가 있으면 on going, 없으면 여기에서 그냥 끝 */
+	i.style.color = 'red';
+	i.innerHTML = "ID is Madatory";
+	f.id.focus(); /*함수*/
+	return; /* 함수 그만 진행 (while에는 break) */
+}else {
+	i.innerHTML = '';
+}
+
+if (pwd == '' || pwd == null) {
+	p.style.color = 'red';
+	p.innerHTML = "PWD is Madatory";
+	f.pwd.focus();
+	return;
+}else{
+	p.innerHTML =" ";
+}
+
+if (pwdcheck == '' || pwdcheck == null) {
+	pc.style.color = 'red';
+	pc.innerHTML = "PWD Check is Madatory";
+	f.pwdcheck.focus();
+	return;
+}else{
+	pc.innerHTML =" ";
+}
+
+if(pwd != pwdcheck){ /* 조건문에 해당하지 않으면 그냥 통과하면 되므로(on goint), 반드시 if-else로 안 써도 됨 */
+	alert('Re-try');
+	f.pwd.focus();
+	f.pwdcheck.focus();
+	return;
+}
+
+if (hint == '' || hint == null) {
+	h.style.color = 'red';
+	h.innerHTML = "HINT is Madatory";
+	f.hint.focus();
+	return;
+}else{
+	h.innerHTML =" ";
+}
+
+if (hobby == '' || hobby == null) {
+	hb.style.color = 'red';
+	hb.innerHTML = "HOBBY is Madatory";
+	f.hobby.focus();
+	return;
+	
+}else{
+	hb.innerHTML = " ";
+	
+}
+
+if (age == '' || age == null) {
+	a.style.color = 'red';
+	a.innerHTML = "AGE is Madatory";
+	f.age.focus();
+	return;
+}else{
+	a.innerHTML = " ";
+}
+
+  if (age.length > 2) {
+	alert('Input 2 number');
+	f.age.focus();
+	return;
+};
+
+	 
+//여기가 최종 확인 ∴ 여기 오기 전까지 if 조건문을 걸어 확인함
+var c = confirm('Are you Register ?');
+if (c == true) {
+	f.submit();
+};
+};
+
+</script>
+</head>
+
+<body>
+<h3>Sign Up Page</h3>
+
+	<form action="login" method="get">
+		ID <input type="text" name="id"><a id="i"></a><br> 
+		PWD <input type="text" name="pwd"><a id="p"></a><br>
+		PWD CHECK <input type="text" name="pwdcheck"><a id="pc"></a><br>
+		
+		HINT <select name="hint">
+		    <option value="" >check</option>
+			<option value="a">animal</option>
+			<option value="c">color</option>
+			<option value="f">food</option>
+		</select><a id="h"></a><br> 
+		
+		TRAIN <input type="radio" name="hobby" value="t">
+		STUDY <input type="radio" name="hobby" value="s"> 
+		MUSIC <input type="radio" name="hobby" value="m">
+		<a id="hb"></a><br> 
+
+		AGE <input type="number" name="age"><a id="a"></a><br>
+		
+		<input type="reset" value="RESET">
+		<input onclick="register(this.form);" type="button" value="REGISTER">
+		
+	</form>
+</body>
+</html>
