@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+	<style></style>
+	<script>
+		$(document).ready(function () {
+			$('a').click(function () {
+				var id = $('#register > input[name="id"]').val();
+				var pwd = $('#register > input[name="pwd"]').val();
+				var name = $('#register > input[name="name"]').val();
+
+				var c = confirm('로그인 하시겠습니까?');
+				// alert는 경고창, prompt는 입력창, confirm은 선택창
+				if (c == true) {
+					$('#register').attr('method', 'get'); /* 전송 방식 */
+					$('#register').attr('action', 'a.jsp');
+					$('#register').submit(); /* submit은 그냥 전송해버림 */
+				} /* 데이터 입력 후 'REGISTER' 누르면 로그인 확인 메시지가 뜨면서 데이터 전송 후 reset */
+			});
+
+			/* 아이디 다섯글자 이상 입력하도록 */
+
+			$("input[name='id']").blur(function () { // blur는 동작이 사라진 후 실행
+				if ($(this).val().length >= 5) {
+					$("input[name='pwd']").removeAttr('disabled');
+				} // 요소를 비활성화 하는 'disabled'이용하여 조건에 따라 입력창 제어
+				else {
+					$("input[name='pwd']").attr('disabled');
+					alert("ID를 다섯글자 이상 입력해주세요.");
+				}
+			});
+
+			$("input[name='pwd']").blur(function () {
+				if ($(this).val().length >= 8) {
+					$("input[name='name']").removeAttr('disabled');
+				}
+				else {
+					$("input[name='name']").attr('disabled');
+					alert("password를 여덟글자 이상  입력해주세요.");
+				}
+			});
+
+		}); // end onload
+	</script>
+</head>
+
+<body>
+	<h1>Register</h1>
+	<form id="register">
+		<!-- 테이블 활용하여 입력창 구성하면 가지런히 정렬할 수 있음 -->
+		<table>
+			<tbody>
+				<tr>
+					<td>ID</td>
+					<td><input type="text" name="id"></td>
+				</tr>
+				<tr>
+					<td>PWD</td>
+					<td><input type="password" name="pwd" disabled></td>
+				</tr>
+				<tr>
+					<td>NAME</td>
+					<td><input type="text" name="name" disabled></td>
+				</tr> <!-- 초기상태에서 pwd와 name을 비활성화한 후, id부터 조건에 대입하여 성립할 때만 실행 -->
+			</tbody>
+		</table>
+		<a href="#">REGISTER</a> <!-- 사용하지 않을 땐 '#'로 막기 -->
+	</form>
+</body>
+
+</html>
