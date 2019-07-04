@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+	<style></style>
+	<script>
+		function display(data) {
+			$('h1').text(data);
+		};
+
+		function sendData(n1, n2) {
+			var surl = 'calc1'; /* 서버프로그램 이름 지정 */
+			$.ajax({ /* 데이터를 여기에 집어 넣음 */
+				url: surl,
+				method: "post",
+				data: { "num1": n1, "num2": n2 },
+				success: function (result) {
+					//alert('['+result+']');
+					display(result); // 비동기방식으로 데이터 받음
+				},
+				error: function(){
+					
+				}
+			});
+		};
+		$(document).ready(function () {
+			$('button').click(function () {
+				var num1 =
+					$('input[name="num1"]').val();
+				var num2 =
+					$('input[name="num2"]').val();
+				// 이 데이터를 Ajax를 이용하여 서버로 전송	
+				sendData(num1, num2);
+			});
+		});
+
+
+	</script>
+</head>
+
+<body>
+	<h1></h1> <!-- 결과를 뿌릴 위치 -->
+	<!-- Ajax에서는 form이 없어도 됨 -->
+	NUM1<input type="number" name="num1"><br>
+	NUM2<input type="number" name="num2"><br>
+	<button>Calc</button>
+</body>
+
+</html>

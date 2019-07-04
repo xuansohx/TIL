@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+	<style>
+		div {
+			width: 300px;
+			border: 2px solid red;
+		}
+
+		img {
+			width: 20px;
+		}
+	</style>
+	<script>
+		/*
+	[
+		{"rank":1,"keyword":"김서겸","type":"up","cnt":100},
+		{"rank":2,"keyword":"Java","type":"down","cnt":1},
+		{"rank":3,"keyword":"Ajax","type":"down","cnt":2},
+		{"rank":4,"keyword":"임지훈 잠","type":"up","cnt":20},
+		{"rank":5,"keyword":"승엽이 술","type":"up","cnt":30}
+	]
+	
+	*/ // 배열 안에 object가 들어가 있음
+
+		function display(data) {
+			$('div').empty(); // 3초에 한 번씩 반복될 때, 데이터 비우고 시작하기 
+			$(data).each(function (index, item) { // each를 통하여 배열의 데이터를 하나씩 뿌려줌
+				var str = '';
+				str += '<h3>';
+				str += item.rank + " " + item.keyword + "  " + item.type + " " + item.cnt;
+
+				if (item.type == 'up') {
+					str += '<img src = "up.png">';
+				} else {
+					str += '<img src = "down.png">';
+				}
+
+				str += '</h3>';
+				$('div').append(str);
+			}); //jQuery에서 for문 돌리기
+		};
+		function getData() {
+			$.ajax({
+				url: 'chart', // 서버프로그램
+				success: function (result) { // 데이터를 요청만 하므로 method 안 써도 됨
+					//alert(eval(result));
+					display(eval(result)); 
+					// ajax는 값을 받아 display라는 함수에 값을 전송
+					// string을 javascript로 바꿔주는 eval 함수 필요
+				}
+
+			});
+		};
+		$(document).ready(function () { // 동작이 되자 마자 get Data로 ajax에서 data 가져오라고 호출
+			getData();
+			setInterval(getData, 3000); // getData 3초에 한 번씩 호출하기
+		});
+	</script>
+</head>
+
+<body>
+	<h1>Keyword Chart</h1>
+	<div></div>
+</body>
+
+</html>

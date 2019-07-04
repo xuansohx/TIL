@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/modules/export-data.js"></script>
+	<style></style>
+	<script>
+		function makeChart(data) {
+			Highcharts.chart('container', {
+				chart: {
+					type: 'line'
+				},
+				title: {
+					text: 'Seoul Monthly Average Temperature'
+				},
+				subtitle: {
+					text: ''
+				},
+				xAxis: {
+					categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+				},
+				yAxis: {
+					title: {
+						text: 'Temperature (°C)'
+					}
+				},
+				plotOptions: {
+					line: {
+						dataLabels: {
+							enabled: true
+						},
+						enableMouseTracking: false
+					}
+				},
+				series: data
+			});
+		}; // end makeChart
+
+		function Temp(n,d1){ // Temp라는 object에 이름과 배열이 들어가도록
+			this.name = n;
+			this.data = d1;
+		};
+
+		function parsing(data){ // parsing은 데이터 꺼내는 것
+			var ts = $(data).find('temp'); // 배열 - find가 tag를 읽어들임
+			var datas = [];
+			ts.each(function(index,item){
+				var name = $(this).find('name').text(); // text 붙여줘야 데이터의 '값'을 가져옴
+				var d = $(this).find('data'); // data를 finding을 하면 10개 이기 때문에 배열 'd'가 나옴
+				var ds = [];
+
+				d.each(function(index,item){
+					ds.push(Number($(item).text()));
+				});
+				
+				var obj = new Temp(name,ds);
+				datas.push(obj);
+			});
+			makeChart(datas);
+		};
+
+		function getData() {
+			$.ajax({
+				url: 'temp.xml', // 서버프로그램에 요청
+				success: function (data) { // 데이터가 JSON으로 내려오면 / 여기서는 xml 형태
+					parsing(data);
+					//makeChart(eval(data)); // 데이터를 넣어줌
+				}
+			});
+		};
+
+		$(document).ready(function () {
+			getData(); // 데이터 요청
+			//makeChart(); // 함수 만듦
+			//setInterval(getData,5000); // 5초에 한 번씩 새로고침
+		});
+
+	</script>
+</head>
+
+<body>
+	<h1>My Charts</h1>
+	<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+</body>
+
+</html>
