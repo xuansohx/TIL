@@ -155,3 +155,5 @@ WHERE P.FACTNO = F.FACTNO;
 
 ### 2-5. JDBC API 이용하여 CRUD 프로그램 작성
 
+[JDBC CRUD 실습코드 보러가기](https://github.com/xuansohx/TIL/tree/master/%EC%8B%A4%EC%8A%B5%EC%BD%94%EB%93%9C/SQL_JDBC_CRUD)
+
