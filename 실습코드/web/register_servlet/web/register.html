@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+	<style></style>
+	<script>
+
+	</script>
+</head>
+
+<body>
+	<h1>Register Page</h1>
+	<form action="register" method="POST">
+		<table>
+			<tr>
+				<td>NAME : </td>
+				<td><input type="text" name="name"></td>
+			</tr>
+			<tr>
+				<td>ID : </td>
+				<td><input type="text" name="id"></td>
+			</tr>
+			<tr>
+				<td>PWD : </td>
+				<td><input type="password" name="pwd"></td>
+			</tr>
+		</table>
+
+		<a>User Type : </a>
+		Student<input type="radio" name="type" value="student">
+		Professor<input type="radio" name="type" value="professor">
+		Public<input type="radio" name="type" value="public"><br>
+
+		<a>Academic : </a>
+		<select name="academic">
+			<option value="">choose</option>
+			<option value="bachelor">bachelor</option>
+			<option value="master">master</option>
+			<option value="doctor">doctor</option>
+		</select><br>
+
+		<a>Language : </a>
+		C<input type="checkbox" name="language" value="c">
+		Java<input type="checkbox" name="language" value="java">
+		Python<input type="checkbox" name="language" value="python"><br>
+
+
+
+		<input type="submit" value="SUBMIT"><br>
+	</form>
+</body>
+
+</html>
