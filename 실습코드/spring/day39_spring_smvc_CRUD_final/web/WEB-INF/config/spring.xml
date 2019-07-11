@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+	<context:component-scan base-package="com.*" />
+	<tx:annotation-driven transaction-manager="txManager"/> <!-- ?????? -->
+	<mvc:annotation-driven />
+
+	<!-- ViewResolver -->
+	<!-- JSP 이름만 설정하면 자동적으로 .jsp 붙여서 만들어줌 -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/view/" />
+		<property name="suffix" value=".jsp" />
+		<property name="order" value="0" />
+	</bean>
+
+	<!-- File Upload -->
+	<bean
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+		id="multipartResolver">
+		<property value="500000000" name="maxUploadSize" />
+
+	</bean>
+
+	<!-- Multi language -->
+	<bean
+		class="org.springframework.context.support.ResourceBundleMessageSource"
+		id="messageSource">
+		<!-- 사용자가 접속했을 때 한국이면 화면을 한국어로 /나라에 따른 언어 (다국어 처리) -->
+		<property name="basenames">
+			<list>
+				<value>messages/messages</value> 
+				<!-- 폴더와 파일의 이름 / 이 폴더 내 파일에 의하여 지원 -->
+				<!-- messages까지 정의내려도 알아서 찾아줌???  -->
+			</list>
+		</property>
+	</bean>
+	<bean
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver"
+		id="localeResolver">
+	</bean>
+	<mvc:interceptors>
+		<bean
+			class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property value="lang" name="paramName" />
+		</bean>
+	</mvc:interceptors>
+	
+	<!-- 1. Database Setting -->
+<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+<property value="oracle.jdbc.driver.OracleDriver" name="driverClassName"/>
+<property value="jdbc:oracle:thin:@70.12.114.61:1521:xe" name="url"/>
+<property value="db2" name="username"/>
+<property value="db2" name="password"/>
+</bean>
+
+<!-- 2. Transaction Setting -->
+<bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="txManager">
+<property name="dataSource" ref="dataSource"/>
+</bean>
+
+<!-- 3. MyBatis Setting -->
+<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+<property name="dataSource" ref="dataSource"/>
+<property value="classpath:com/config/mybatis.xml" name="configLocation"/>
+</bean>
+
+<!-- 4. Spring Mybatis Connect -->
+<bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSessionTemplate">
+<constructor-arg ref="sqlSessionFactory"/>
+</bean>
+
+<!-- 5. Mapper Setting -->
+<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+<property value="com.mapper" name="basePackage"/>
+</bean>
+</beans>
+
+
+
+
+
+
+
+
+

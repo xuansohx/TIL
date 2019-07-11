@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.UserMapper">
+	<!-- 이 xml을 사용하려면 UserMapper로 들어와야 한다는 의미 -->
+	
+<!-- 	<resultMap type="user" id="um">
+	<result property="id" column="id"/>
+	<result property="name" column="name"/>	
+	</resultMap>
+ -->
+	<insert id="insert" parameterType="user">
+		<!-- dao가 insert 호출하면 UserMapper 거쳐 xml에서 id가 insert인 것이 호출 -->
+		INSERT INTO T_USER VALUES (#{id},#{pwd},#{name}) <!-- #으로 꺼냄 -->
+	</insert>
+	<update id="update" parameterType="user">
+		UPDATE T_USER SET
+		PWD=#{pwd},NAME=#{name} WHERE ID=#{id}
+	</update>
+	<delete id="delete" parameterType="String">
+		DELETE FROM T_USER WHERE ID=#{obj}
+	</delete>
+	<select id="select" resultType="user" parameterType="String">
+		SELECT * FROM T_USER WHERE ID=#{obj}
+		<!-- UserMapper를 통하여 들어오므로 UserMapper에서 선언한 obj를 선언하여야 사용할 수 있음 -->
+	</select>
+
+	<select id="selectall" resultType="user">
+		SELECT * FROM T_USER ORDER BY 1
+	</select>
+	<!-- resultMap에서 설정한 형태로 select 결과를 출력 -->
+	<!-- select tag 내 resultType을 resultMap="um"으로 넣어줌 -->
+
+</mapper>
+
+
+
+
+
+
+
+
