@@ -11,9 +11,10 @@
 - Java
 - SQL - Oracle11g DB 사용
 - Web : Tomcat9.0 사용 & HTML5, CSS3, JavaScript + Bootstrap4 / Jquery, Ajax  / API 활용
-- Spring / Mybatis
+- Spring Framework / Spring MVC / Mybatis
 
 **[ 2 ] 빅데이터 시스템 교육**
 
-- Linux : (:wavy_dash: ing​)
+- Linux : Linux OS 운영 및 명령어 이해 / 저장 관리 시스템 구축
+- Hadoop : (:wavy_dash: ing​)
 
