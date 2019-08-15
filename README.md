@@ -16,5 +16,6 @@
 **[ 2 ] 빅데이터 시스템 교육**
 
 - Linux : Linux OS 운영 및 명령어 이해 / 저장 관리 시스템 구축
-- Hadoop : (:wavy_dash: ing​)
+- Hadoop : 
+- R : (:wavy_dash: ing)
 
