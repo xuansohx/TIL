@@ -16,6 +16,9 @@
 **[ 2 ] 빅데이터 시스템 교육**
 
 - Linux : Linux OS 운영 및 명령어 이해 / 저장 관리 시스템 구축
-- Hadoop : 
-- R : (:wavy_dash: ing)
+- Hadoop : 가상 분산 모드 & 완전 분산 모드 / hive 
+- R : 데이터 처리 및 분석 / HADOOP-HIVE, Java, Oracle과 연동
 
+**[ 3 ] IoT**
+
+- Android :  (:wavy_dash: ing)
