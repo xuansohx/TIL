@@ -23,7 +23,7 @@
 - push & pull
 - forking & pull request (github flow)
 
-![](../../../GitHub/TIL/Image/Reference/GitProcess.jpg)
+![](../Image/Reference/GitProcess.jpg)
 
 ## 2. Git 명령어
 
