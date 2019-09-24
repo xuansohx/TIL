@@ -157,4 +157,5 @@ git push origin slave
 
 <br>
 
-:heavy_check_mark: Git 사용법 공부하고 정리해두기 ▶ [git사용법정리](https://github.com/xuansohx/study/blob/master/%EC%95%88%EC%86%8C%ED%98%84/git%EC%82%AC%EC%9A%A9%EB%B2%95%EC%A0%95%EB%A6%AC.md)
+:heavy_check_mark: Git 사용법 공부하고 정리해두기 ▶ [git사용법정리](https://github.com/xuansohx/TIL/blob/master/git%EC%82%AC%EC%9A%A9%EB%B2%95%EC%A0%95%EB%A6%AC.md)
+
