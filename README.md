@@ -22,4 +22,5 @@
 **[ 3 ] IoT**
 
 - Android 
-- Network :  (:wavy_dash: ing)
+- Network : Thread / Synchronized / Stream / Socket
+- CAN :  (:wavy_dash: ing)
