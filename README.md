@@ -4,8 +4,6 @@
 - **교육일정 :** 2019.05.10.Fri ~ 2019.12.13.Fri / 1일 8H 씩 총 149일
 - **교육내용 :** 
 
-> 현재까지 학습한 내용만 기입 → 계속하여 업데이트 예정
-
 **[ 1 ] 기반 핵심 기술**
 
 - Java
@@ -29,5 +27,5 @@
 
 :clapper: **Mini Project** : Spring MVC와 mybatis를 활용한 문화콘텐츠 정보 제공 및 리뷰 공유 웹 사이트 ▶ [SHOWer](https://github.com/xuansohx/SHOWer)
 
-:car: **Final Project** : 자율 주행 기반 커넥티드카 셰어링 서비스 선행 개발 (:wavy_dash: ing) ▶ [DeCoCar](https://github.com/xuansohx/FinalProject)
+:car: **Final Project** : 자율 주행 기반 커넥티드카 셰어링 서비스 선행 개발 (:wavy_dash: ing) ▶ [DeCoCa](https://github.com/xuansohx/FinalProject)
 
