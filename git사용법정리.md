@@ -13,6 +13,9 @@ git config --global user.email "email"
 git config --global --list 
 git config --global --unset-all user.name
 git config --global --unset-all user.email
+
+git config --global --unset user.name "xuansohx"
+git config --global --unset user.email "ansoh94@naver.com"
 ```
 
 - 저장소 만들기
@@ -52,6 +55,8 @@ git push
 
 ```
 git log -1 → 이전 commit 확인
+git long --oneline → 간단하게 한 줄로 표시
+
 git commit --amend -m "message" → 수정메시지 입력
 git push -u origin master 
 ```
@@ -78,4 +83,10 @@ git push
 ```
 
 > 특정 디렉토리에만 적용할 수도 있음
+
+- git add 취소하기 (Untracked 상태로 바꿈)
+
+```
+git reset HEAD 파일명
+```
 
