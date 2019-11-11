@@ -27,5 +27,8 @@
 
 :clapper: **Mini Project** : Spring MVC와 mybatis를 활용한 문화콘텐츠 정보 제공 및 리뷰 공유 웹 사이트 ▶ [SHOWer](https://github.com/xuansohx/SHOWer)
 
-:car: **Final Project** : 자율 주행 기반 커넥티드카 셰어링 서비스 선행 개발 (:wavy_dash: ing) ▶ [DeCoCa](https://github.com/xuansohx/FinalProject)
+:car: **Final Project** : 자율 주행 기반 커넥티드카 셰어링 서비스 선행 개발 ▶ [DeCoCa](https://github.com/xuansohx/FinalProject)
 
+<br>
+
+- Python : (:wavy_dash: ing) 
