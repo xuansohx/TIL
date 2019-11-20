@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!--
+    <a href="/daum_webtoon/mon">월요일</a>
+    <a href="/daum_webtoon/tue">화요일</a>
+    <a href="/daum_webtoon/wed">수요일</a>
+    <a href="/daum_webtoon/thu">목요일</a>
+    <a href="/daum_webtoon/fri">금요일</a>
+    <a href="/daum_webtoon/sat">토요일</a>
+    <a href="/daum_webtoon/sun">일요일</a>
+    -->
+
+    <!-- {}와 %로 Python 문법임을 나타냄-->
+    <!-- for문 시작임을 'endfor'로 표시! 여기에서는 tab으로 나타내지 않음 -->
+    {% for day in days %}
+        <a href = "/daum_webtoon/{{ day }}">{{ day }}</a>
+    {% endfor %}
+
+</body>
+</html>
