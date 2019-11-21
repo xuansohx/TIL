@@ -45,8 +45,9 @@
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     {% for image in article.article_images %}
-                    <div class="carousel-item active">
+                    <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}">
                         <!-- active는 한 번만 설정돼야함! 여러 개 있으면 이미지 슬라이드 안됨 -->
+                        <!-- counter가 '1'일 때만 active 적용! 한 번 적용되면 count가 up 되므로 적용 안돼-->
                         <img src="{{image.image_thumbnail.url}}" class="d-block w-100" alt="...">
                     </div>
                     {% endfor %}
