@@ -1,12 +1,18 @@
 from django.shortcuts import render, redirect
-from .models import Article, Comment
+from .models import Article, Comment, ArticleImages
 
 # Create your views here.
 def index(request):
     if request.method == "POST":
         article = Article()
         article.contents = request.POST["contents"]
+        # 원본 이미지를 저장
+        # article.image = request.FILES["image"] 
+        # 원본 이미지를 프로세싱 한 이미지를 저장
+        # article.image_resized = request.FILES["image"]
         article.save()
+        for image in request.FILES.getlist("image"):
+            ArticleImages.objects.create(article_id=article.id, image=image)
         return redirect('articles')
     else:
         # reverse는 역순으로 정렬 -> 최신 글이 맨 위에 뜨도록 설정

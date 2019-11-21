@@ -15,8 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('insta/', include('article.urls'))
 ]
+
+# 우리가 보는 static file의 URL을 만들어줌?
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
