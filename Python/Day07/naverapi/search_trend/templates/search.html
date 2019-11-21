@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>
+        검색어를 입력하세요.
+    </h1>
+    <form action="/search/result">
+        <label>기간 시간날짜</label>
+        <input type="date" name="search_start_date">
+        <br/>
+        <label>기간 종료날짜</label>
+        <input type="date" name="search_end_date">
+        <br/>
+        <label>구간 단위</label>
+        <select name="search_time_unit">
+            <option value="date">일간</option>
+            <option value="week">주간</option>
+            <option value="month">월간</option>
+        </select>
+        <br/>
+        <label>검색어 그룹명</label>
+        <input type="text" name="search_group_name">
+        <br/>
+        <label>트렌드를 볼 검색어 목록(여러 개의 검색어의 경우 ','로 구분)</label>
+        <input type="text" name="search_keywords">
+        <br/>
+        <input type="submit" value="트렌드 보기">
+    </form> 
+</body>
+</html>
