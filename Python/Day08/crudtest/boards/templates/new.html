@@ -1,0 +1,26 @@
+<!-- 내가 만든 block을 어느 html 문서에서 사용할지 기입-->
+{% extends 'base.html' %}
+
+<!-- block content와 endblock으로 감싸줘야됨-->
+{% block content %}
+<form action="/boards/create">
+    <div class="form-group">
+        <label for="title">제목</label>
+        <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요">
+    </div>
+
+    <div class="form-group">
+        <label for="contents">내용</label>
+        <textarea class="form-control" id="contents" rows="3" name="contents"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="creator">작성자</label>
+        <input type="text" class="form-control" id="creator" name="creator">
+    </div>
+
+    <div class="form-group text-center">
+        <input type="submit" value="작성하기" class="btn btn-success">
+    </div>
+</form>
+{% endblock %}
