@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block stylesheet %}
+<style>
+.container {
+    padding-right: 10em !important;
+    padding-left: 10em !important;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <form action="{% url 'articles' %}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+            <div class="card-body">
+                <textarea name="contents" class="form-control" rows="5"></textarea>
+                <div class="input-group mt-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                    </div>
+                    <div class="custom-file">
+                        <input multiple name="image" type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-right">
+                <input type="submit" class="btn btn-success" value="작성하기">
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="container">
+    {% for article in articles %}
+    <div class="row mt-4">
+        <div class="card col-12">
+            {% if article.article_images %}
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    {% for image in article.article_images %}
+                    <div class="carousel-item {%if image.image_thumbnail.url == article.article_images.first.image_thumbnail.url%}active{% endif %}">
+                        <img src="{{image.image_thumbnail.url}}" class="d-block w-100" alt="...">
+                    </div>
+                    {% endfor %}
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+            {% endif %}
+            <div class="card-body">
+                <div class="article" style="min-height: 9rem;">
+                    <p class="card-text">{{article.contents}}</p>
+                </div>
+                <div class="text-center">
+                    <a href="{% url 'edit' article.id %}" class="btn btn-warning text-white"><i class="fas fa-edit"></i></a>
+                    <a href="{% url 'delete' article.id %}" class="btn btn-danger text-white"><i class="fas fa-trash-alt"></i></a>
+                </div>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <!-- 여기에서 댓글을 작성 ??? -->
+                    <form action="{% url 'comments' %}" method="POST">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+                        <input type="hidden" name="article_id" value="{{article.id}}">
+                        <div class="row">
+                            <div class="col-9">
+                                <input type="text" class="form-control" name="contents">
+                            </div>
+                            <div class="col-3 text-center">
+                                <!-- 댓글을 등록하는 버튼 -->
+                                <input type="submit" class="btn btn-primary" value="쓰기">
+                            </div>
+                        </div>
+                    </form>
+                </li>
+                <!-- 댓글은 여기에서 부터 -->
+                {% for comment in article.comments %}
+                <li class="list-group-item">
+                    <i class="fas fa-comment-dots"></i> 
+                    {{comment.contents}}
+                    <span class="float-right">
+                        <!-- 댓글 수정 & 삭제 버튼 -->
+                        <a href="{% url 'edit_comment' comment.id %}" class="btn btn-warning text-white editComment" data-id="{{comment.id}}"><i class="fas fa-edit"></i></a>
+                        <a href="{% url 'delete_comment' comment.id %}" class="btn btn-danger text-white deleteComment"><i class="fas fa-trash-alt"></i></a>
+                    </span>
+                </li>
+                {% endfor %}
+                <!-- 댓글 끝 -->
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    // 여기부터 js code 작성
+    $(function() {
+        // 댓글 수정 버튼을 눌렀을 때
+        $(document).on('click','editComment',function(){
+            var id = $(this).data('id');
+            var contents = 
+            )
+        })
+    })
+</script>
+{% endblock %}

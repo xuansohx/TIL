@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</html>
+</head>
+
+<body>
+    <form class="mb-5 mt-5" id="boardForm">        
+        댓글쓰기 <!-- title -->
+        <input type="text" class="form-control" id="boardInput"> <!-- 댓글 작성 -->
+        <button type="submit" class="btn btn-primary" id="submitComment">확인</button>
+    </form>
+    <div class="commentList">
+        <ul class="list-group">
+            <!-- 작성된 댓글 -> (댓글 내용 + 수정/삭제 버튼) -->
+            {% for board in boards %}
+            <li class="list-group-item" id="board-{{board.id}}">
+                <!-- 작성한 댓글이 여기에 표시가 됨 -->
+                <span class="boardItem">{{ board.contents }}</span>
+                <span class="float-right">
+                    <!-- 댓글 수정 및 삭제 버튼-->
+                    <button type="button" class="btn btn-danger deleteBoard" data-id="{{board.id}}">삭제</button>
+                    <button type="button" class="btn btn-warning editBoard" data-id="{{board.id}}">수정</button>
+                </span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script>
+        $(function () {
+            // 수정 버튼을 눌렀을 때 실제 DB에서 수정됨
+            // 수정 버튼을 찾아서 이벤트를 등록하기
+            // 아래는 그냥 html 문서 내에서! $.ajax 이 부분이 통신하는 곳
+            $(document).on('click', '.editBoard', function () {
+                var id = $(this).data('id');
+                var contents = $('#board-' + id + ' .boardItem').text();
+                $('#boardInput').val(contents);
+                $('#submitComment').data('method', 'edit');
+                $('#submitComment').data('id', id);
+                console.log($('#submitComment').data());
+            })
+
+            // 삭제 버튼을 눌렀을 때 실제로 DB에서 삭제하기 
+            // document ~ 문서가 준비되면 삭제가 됨! 새로고침 안해도 돼
+            $(document).on('click', '.deleteBoard', function () {
+                // 해당 줄(list)을 하나 삭제해야함
+                var id = $(this).data('id');
+                //console.log(id); // line에 해당하는 댓글의 id 값 확인
+                //$('#board-'+id).hide();
+                $.ajax({
+                    url: '{% url "delete_boards" %}',
+                    method: 'POST',
+                    data: {
+                        board_id: id,
+                        csrfmiddlewaretoken: '{{csrf_token}}',
+                    },
+                    success: function (data) {
+                        alert("삭제성공");
+                        $('#board-' + data.board_id).hide();
+                    },
+                    error: function (data) {
+                        alert("삭제실패");
+                    }
+                })
+                //$('#board-'+id).hide();
+            })
+
+            // 댓글 쓰고, 실제로 DB에 등록하기
+            // boardForm이 제출되었을 때
+            $('#boardForm').on('submit', function (event) {
+                event.preventDefault()
+                // 실제 DB에 등록이 될 수 있도록 ajax에 요청을 만들어줌
+                // board에 담아 댓글을 등록
+                var board = $('#boardInput').val();
+                // 등록 시에는 /insta/jq-test/boards/
+                // 수정 시에는 /insta/jq-test/boards/edit
+                $('#boardInput').val('');
+                console.log($('#submitComment').data())
+                if ($('#submitComment').data('method') == 'edit') {
+                    var id = $('#submitComment').data('id');
+                    $.ajax({
+                        url : '{% url "edit_boards" %}',
+                        method : 'POST',
+                        data : {
+                            board_id : id,
+                            contents : board,
+                            csrfmiddlewaretoken : '{{ csrf_token }}'
+                        },
+                        success: function(data){
+                            // 뭘 찾고? -> 댓글이 있는 부분
+                            $('#board-'+id+' .boardItem').text(board);
+                            // 뭘 바꾸지? -> 내용을 바꾸기
+                            // 확인 버튼에 달려있는 속성(data-method)을 삭제해야함
+                            $('submitComment').removeData('method');
+                            $('submitComment').removeData('id');
+                        },
+                        error: function(data){
+                            alert("수정 실패");
+                        }
+                    })
+                } else {
+                    $.ajax({
+                        url: '{% url "submit_boards" %}',
+                        method: 'POST',
+                        data: {
+                            board: board,
+                            csrfmiddlewaretoken: '{{csrf_token}}'
+                        },
+                        success: function (data) {
+                            alert("성공!");
+                            $('.list-group').prepend(data);
+                        },
+                        error: function (data) {
+                            alert("실패!")
+                        }
+                    })
+
+                }
+            })
+
+            // 댓글달기
+            // 댓글쓰기 버튼이 눌렸을때,
+            // $('#submitComment').on('click', function() {
+            //     var input = $('#commentForm').val();
+            //     if(input == '') {
+            //         alert("댓글을 입력해주세요");
+            //         return;
+            //     }
+            //     // ul.list-group 에 붙여줌
+            //     var position = $('ul.list-group');
+            //     // li.list-group-item 요소를 만들어서
+            //     $('#commentForm').val('');
+            //     var element = `<li class="list-group-item" id="comment-1">
+            //         ${input}
+            //         <span class="float-right">
+            //             <button type="button" class="btn btn-danger delete-comment" value="1">삭제</button>
+            //             <button type="button" class="btn btn-warning">수정</button>
+            //         </span>
+            //     </li>`
+            //     position.prepend(element);
+            // })
+
+            // 이벤트가 발생할 요소를 찾고
+            //$(document).on('click', '.delete-comment', function () {
+            // 이벤트가 발생했을 경우 실행할 이벤트 핸들러를 만든다.
+            // console.dir($(this));
+            //var commentId = $(this).attr('value');
+            // 1. commentId로 삭제할 요소를 찾아서 지워줌
+            // $('#comment-' + commentId).remove();
+            // 2. 이벤트가 발생한 놈으로부터 부모를 찾아 지워줌
+            //$(this).parents('.list-group-item').remove();
+            // console.log(commentId);
+            // console.dir(this.attr('value')); <- jquery 메소드 사용 불가
+            // console.dir(this);
+            // 현재 버튼을 누른 댓글이 삭제되어야 함
+
+            // })
+        })
+        // $(function() {
+
+        // })
+    </script>
+</body>
+
+</html>
