@@ -62,19 +62,24 @@
                     <p class="card-text">{{article.contents}}</p>
                 </div>
                 <div class="text-center">
-                    <a href="{% url 'edit' article.id %}" class="btn btn-warning text-white"><i class="fas fa-edit"></i></a>
-                    <a href="{% url 'delete' article.id %}" class="btn btn-danger text-white"><i class="fas fa-trash-alt"></i></a>
+                    <a href = "{% url 'edit' article.id %}" class = "btn btn-warning text-white"><i class = "fas fa-edit"></i></a>
+                    <a href = "{% url 'delete' article.id %}" class = "btn btn-danger text-white"><i class = "fas fa-trash-alt"></i></a>
                 </div>
             </div>
-            <ul class="list-group list-group-flush">
+            <ul class="list-group list-group-flush" id="comment-list-group-{{article.id}}">
                 <li class="list-group-item">
                     <!-- 여기에서 댓글을 작성 ??? -->
-                    <form action="{% url 'comments' %}" method="POST">
+                    <form action="{% url 'comments' %}" method="POST" class="commentForm" id="commentForm-{{article.id}}">
+                        <!-- input이 아닌 form에 id를 지정하여, form에서부터 찾아가도록 설정-->
                         <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-                        <input type="hidden" name="article_id" value="{{article.id}}">
+                        <input type="hidden" class="articleId" name="article_id" value="{{article.id}}">
+                        <input type="hidden" class="formMethod" name="form_method" value="create">
+                        <!-- 댓글을 작성하면 create / 댓글을 수정하면 edit -->
+                        <input type="hidden" class="commentId" name="comment_id">
+                        <!-- 선택하는 댓글에 따라 'comment_id'의 숫자가 변경-->
                         <div class="row">
                             <div class="col-9">
-                                <input type="text" class="form-control" name="contents">
+                                <input type="text" class="form-control commentInput" name="contents">
                             </div>
                             <div class="col-3 text-center">
                                 <!-- 댓글을 등록하는 버튼 -->
@@ -85,13 +90,14 @@
                 </li>
                 <!-- 댓글은 여기에서 부터 -->
                 {% for comment in article.comments %}
-                <li class="list-group-item">
+                <li class="list-group-item" id="comment-{{comment.id}}">
                     <i class="fas fa-comment-dots"></i> 
-                    {{comment.contents}}
+                    <span class="contents">{{comment.contents}}</span>
                     <span class="float-right">
                         <!-- 댓글 수정 & 삭제 버튼 -->
-                        <a href="{% url 'edit_comment' comment.id %}" class="btn btn-warning text-white editComment" data-id="{{comment.id}}"><i class="fas fa-edit"></i></a>
-                        <a href="{% url 'delete_comment' comment.id %}" class="btn btn-danger text-white deleteComment"><i class="fas fa-trash-alt"></i></a>
+                        <!-- data-contents="{{comment.contents}}" -> 버튼을 누르면 data 가져옴? -->
+                        <button data-contents="{{comment.contents}}" data-article-id="{{article.id}}" class="btn btn-warning text-white editComment" data-id="{{comment.id}}"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger text-white deleteComment" data-id="{{comment.id}}"><i class="fas fa-trash-alt"></i></button>
                     </span>
                 </li>
                 {% endfor %}
@@ -106,13 +112,115 @@
 {% block script %}
 <script>
     // 여기부터 js code 작성
-    $(function() {
-        // 댓글 수정 버튼을 눌렀을 때
-        $(document).on('click','editComment',function(){
-            var id = $(this).data('id');
-            var contents = 
-            )
+    $(function(){
+    // create comment
+    // form으로부터 내용을 받아서 코멘트를 작성(DB에 반영)
+    // article 별로 있는 form으로부터
+    // 'submit'이라는 이벤트에
+    $('.commentForm').on('submit',function(e){
+        e.preventDefault();
+        // 해당 form에 있는 input 중에서 텍스트를 입력한 input으로부터
+        // var contents = $(this).find('input.commentInput').val();
+        // (어떤 article에 대한 댓글인지 알아야함)
+        // <input> 태그의 articleID class에서 value를 꺼내옴        
+        // var id = $(this).find('input.articleId').val();
+        // var method = $(this).find('input.formMethod').val();
+
+        var data = $(this).serialize(); // serialize 이용하여 모든 data 가져옴
+        $(this).find('input.commentInput').val('');
+        // 여기까지 필요한 값은 다 꺼내왔음
+        // 내용을 받아서 create comment 역할을 하는 url로 요청을 보냄
+        $.ajax({
+            url: '{% url "comments" %}',
+            method: 'POST',
+            data: data, // data로 가져온 경우, 이름 안 쓰고 통째로 넘겨줌
+            // 정상적인 callback이 오면, 위에서 받아둔 텍스트를 바탕으로
+            success: function(data){
+                if(data.method == "edit"){
+                    $('#commentForm-' + data.article_id + ' .formMethod').val("create");
+                    $('#comment-' + data.comment_id + ' .contents').text(data.comment)
+                    $('#comment-' + data.comment_id + ' .editComment').data('contents', data.comment);
+                } else {
+                // console.log("성공")
+                // console.log(data);
+                // data로부터 내용을 꺼내 저장
+                // `를 사용해서 data 불러옴
+                    var comment = `
+                        <li class = "list-group-item" id="comment-${data.comment_id}">
+                            <i class = "fas fa-comment-dots"></i>
+                            <span class="contents">${data.comment}</span>
+                            <span class = "float-right">
+                                <button data-contents="${data.comment}" data-article-id="${data.article_id}" data-id="${data.comment_id}" class="btn btn-warning text-while editComment"><i class = "fas fa-edit"></i></button>
+                                <button data-id="${data.comment_id}" class="btn btn-danger text-white deleteComment"><i class="fas fa-trash-alt"></i></button>
+                            </span>
+                        </li>
+                    `
+                    // 새로운 댓글 element를 추가 (append 이용)
+                    $('#comment-list-group-'+data.article_id).append(comment);
+                }
+            },
+            error: function(data){
+                console.log("실패")
+            }
         })
+    })
+        
+    // delete comment
+    // 삭제버튼을 누르면 해당 element가 삭제
+    // 삭제 버튼을 찾음
+    $(document).on('click', '.deleteComment', function(e){
+        // 삭제 버튼에 click event 적용 (리스너와 핸들러)
+        console.log("click");
+        // 해당 element를 가지고 있는 유일한 값을 통하여
+        console.log($(this).data());
+        var comment_id = $(this).data('id');
+        // id를 가지고 DB에서 삭제될 수 있도록 서버에 요청
+        $.ajax({
+            //url: '/insta/comments/' + comment_id + '/delete',
+            // 아래 형태로 사용하기 위하여 urls.py 수정
+            url: '{% url "delete_comment" %}',
+            method: 'POST',
+            data: {
+                comment_id : comment_id,
+                csrfmiddlewaretoken : "{{ csrf_token}}"
+            },
+            success: function(data){
+                console.log("성공"),
+                // 요청이 정상적으로 처리되면 해당 element를 삭제
+                $('#comment-' + comment_id).remove();
+            },
+            error: function(data){
+                console.log("실패")
+            }
+        })
+        
+    })
+
+    
+    // update comment
+    // 기존에 있던 내용을 해당 댓글을 다는 form으로 이동
+    // 내용을 바꾸고 실제로 DB에 반영
+
+    // edit 버튼을 누르면
+    $(document).on('click', '.editComment',function(){
+        // 해당 댓글이 가지고 있던 내용을 
+        var contents = $(this).data("contents");
+        console.log(contents);
+        // 입력창으로 이동
+        var article_id = $(this).data("article-id"); 
+        var comment_id = $(this).data("id");
+        $('#commentForm-' + article_id + ' .commentInput').val(contents);
+        $('#commentForm-' + article_id + ' .formMethod').val("edit");
+        $('#commentForm-' + article_id + ' .commentId').val(comment_id);
+        // 바뀐 내용을 submit 하면 
+        // 실제 서버에 반영
+        // 바뀐 내용으로 해당 댓글을 변경 
+     
+    })
+       
+
+    
+    
     })
 </script>
 {% endblock %}

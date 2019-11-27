@@ -84,16 +84,31 @@ def comments(request):
         contents = request.POST["contents"]
         article_id = request.POST["article_id"]
 
-        comment = Comment()
+        if request.POST["form_method"] == "create":
+            comment = Comment()
+        elif request.POST["form_method"] == "edit":
+            comment_id = request.POST["comment_id"]
+            comment = Comment.objects.get(id=comment_id)
+
         comment.contents = contents
         comment.article_id = article_id
         comment.save()
-        return redirect('articles')
+        context = {
+            # 'comment'라는 이름으로 data를 보냄
+            'method' : request.POST["form_method"], # class가 아닌 name으로 가져옴
+            'comment' : comment.contents,
+            'comment_id' : comment.id,
+            'article_id' : comment.article_id,
+        } 
+        # json을 application으로 보내는 것은 django에서의 약속
+        return HttpResponse(json.dumps(context), content_type="application/json")
 
-def delete_comment(request, comment_id):
-    comment = Comment.objects.get(id=comment_id)
-    comment.delete()
-    return redirect('articles')
+def delete_comment(request):
+    if request.method == "POST":
+        comment_id = request.POST["comment_id"]
+        comment = Comment.objects.get(id=comment_id)
+        comment.delete()
+        return HttpResponse('', status=204)
 
 def edit_comment(request, comment_id):
     comment = Comment.objects.get(id=comment_id)
