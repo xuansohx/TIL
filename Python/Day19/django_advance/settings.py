@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'bootstrap4',
     'board',
     'django_extensions',
     'django.contrib.admin',
@@ -56,7 +57,10 @@ ROOT_URLCONF = 'django_advance.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # 비어있는 배열을 갖는 DIRS -> 하지만 진짜 비어있는 것이 아님
+        # django가 기본 세팅을 해둠 (default : INSTALLED_APP 안의 templates/)
+        # path 지정해줄 수도 있음
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
