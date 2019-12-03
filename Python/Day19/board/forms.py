@@ -12,7 +12,7 @@ class ArticleForm(forms.ModelForm):
     # keyword = forms.CharField(min_length=1, max_length=10)
     class Meta: # django 내부에서 제공하는 form...?
         model = Article
-        fields = '__all__'
+        #fields = '__all__'
 
         # 일부만 전송? 이용? 하고 싶으면 아래와 같이 입력
         # title과 content만 input 할 수 있는 form이 출력
@@ -20,5 +20,5 @@ class ArticleForm(forms.ModelForm):
 
         # 하나만 빼고 다 쓰고 싶은 경우
         # date만 빼고 form이 생성돼 출력
-        # exclude = ['date']
+        exclude = ['date',]
 

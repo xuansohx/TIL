@@ -7,8 +7,9 @@ class Article(models.Model):
     keyword = models.CharField(max_length=50)
     email = models.CharField(max_length=200)
     content = models.TextField()
-    datetime = models.DateField()
-
+    # datetime = models.DateField()
+    date = models.DateField(blank=True, null=True)
+    
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
 

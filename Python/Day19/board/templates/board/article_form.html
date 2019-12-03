@@ -1,0 +1,12 @@
+<!-- article_form.html -->
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+<!-- form > action 내 url은 받는 사람! url이 없으면 현 위치로 전송 -->
+<form action="{% url 'board:new_article' %}" method="POST">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <input type = "submit">
+</form>
+{% endblock content %}
