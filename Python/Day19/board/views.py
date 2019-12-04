@@ -2,8 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 # get_object_or_404 : 404 오류를 내기 위한 객체
 from .models import Article, Comment
 from .forms import ArticleForm
+# 로그인이 필요할 때 추가
+from django.contrib.auth.decorators import login_required 
 
-# @login_required
+# 이렇게 표시해주면 로그인을 해야만 아래 함수가 실행
+@login_required
 def new_article(request):
     if request.method == 'POST':
         # 원래는 a.title = request.POST.get('title')
@@ -20,7 +23,7 @@ def new_article(request):
     #print(form.errors)
     # form을 내보내면 우리가 만들지 않아도
     # bootstrap이 적용돼 나옴 (form.py)
-    return render(request, 'board/new_article.html', context)
+    return render(request, 'board/article_form.html', context)
 
 def article_list(request):
     articles = Article.objects.all()
@@ -32,6 +35,7 @@ def article_detail(request, article_id):
     context = {'article' : article}
     return render(request, 'board/article_detail.html', context)
 
+@login_required
 def edit_article(request, article_id):
     article = get_object_or_404(Article, id=article_id)
     if request.method == 'POST':

@@ -122,8 +122,11 @@ USE_TZ = True
 
 # 기본 setting이므로 쓰나마나
 # AUTH_USER_MODEL = 'auth.User'
+# 기능 확장
+AUTH_USER_MODEL = 'accounts.User'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
