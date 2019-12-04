@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+<h1>Signup</h1>
+<form method="POST">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <!-- form tag 안에 button은 별도로 설정하지 않아도 submit 가능 -->
+    <button class="btn btn-primary">
+        Signup
+    </button>
+</form>
+{% endblock content %}

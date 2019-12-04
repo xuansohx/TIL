@@ -4,6 +4,7 @@ from .models import Article, Comment
 
 # ArticleForm -> 케이스 같은 것
 # 추가적인 기능 & 외부로부터 보호
+# django forms valdation
 class ArticleForm(forms.ModelForm): 
     # model은 data를 받아주지만,
     # case에서 필터링하여 받음

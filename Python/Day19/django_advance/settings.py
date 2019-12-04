@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'bootstrap4',
     'board',
+    'accounts',
     'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -119,6 +120,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+# 기본 setting이므로 쓰나마나
+# AUTH_USER_MODEL = 'auth.User'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/

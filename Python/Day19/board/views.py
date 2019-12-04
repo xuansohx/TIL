@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Article, Comment
 from .forms import ArticleForm
 
+# @login_required
 def new_article(request):
     if request.method == 'POST':
         # 원래는 a.title = request.POST.get('title')
