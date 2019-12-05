@@ -1,9 +1,18 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 # 팔찌를 채워주는 것(login) <-> logout / def login과 중복되므로 as 이용하여 이름 재정의
 from django.contrib.auth import login as auth_login, logout as auth_logout
 
 # from .forms import AuthenticationForm, UserCreationForm
 from .forms import CustomAuthenticationForm, CustomUserCreationForm
+
+def follow(request, user_id):
+    fan = request.user
+    star = get_object_or_404(id=user_id)
+    if fan.stars.filter(id=star.id).exists():
+        fan.stars.remove(star)
+    else:
+        fan.stars.add(star)
+    return redirect('accounts:user_detail', star.id)
 
 def signup(request):
     # 요청을 보낸 사용자가 인증이 되어 있지 않으면 -> 회원가입
@@ -38,6 +47,7 @@ def login(request):
                 # 누군지 가져오기
                 user = form.get_user()
                 # user 인증되면 팔찌를 채워
+                # cash에 'sessionid' 추가된 것으로 확인
                 auth_login(request, user)
                 # -> 이 상태에서는 회원가입 페이지로 이동하지 못 함
                 # return redirect('board:article_list')

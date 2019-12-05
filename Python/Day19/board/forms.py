@@ -21,5 +21,11 @@ class ArticleForm(forms.ModelForm):
 
         # 하나만 빼고 다 쓰고 싶은 경우
         # date만 빼고 form이 생성돼 출력
-        exclude = ['date',]
+        exclude = ['date', 'author', 'like_users']
 
+class CommentForm(forms.ModelForm):
+    content = forms.CharField(min_length=1, max_length=200)
+    class Meta:
+        model = Comment
+        # fields = '__all__'
+        fields = ['content',]

@@ -1,11 +1,65 @@
 {% extends 'base.html'%}
+{% load bootstrap4 %}
 {% block content %}
 <h1>{{article.title}}</h1>
+<h2>{{ article.author }}</h2>
+<!-- 원래는 article.author.username으로 써야됨 -->
+{% if article.author == request.user %}
+<!-- 게시글의 작성자와 지금 request를 보내는.. 로그인 된 user가 같을 때 -->
+<!-- request.user를 user로 줄여써도 같은 값이 나옴 -->
+    <a href="">수정</a>
+    <a href="">삭제</a>
+{% endif %}
 <small>
     {{ article.created_at}} | {{article.updated_at}}
 </small>
+
+<form action="{% url 'board:toggle_like' article.id %}" method="POST">
+    {% csrf_token %}
+    {% if is_like %} 
+        <!-- '좋아요' 버튼을 눌렀을 때와 취소했을 때 상태 다르게 보여줌 -->
+        <button class="btn btn-warning">dislike</button>
+    {% else %}
+        <button class="btn btn-primary">like it!</button>
+    {% endif %}
+</form>
+
+
 <p>{{article.content}}</p>
 <p>
     {{article.keyword}} | {{article.email}}
 </p>
+
+{% if user.is_authenticated %} 
+<!-- user가 login 하면 출력 -->
+    <form action="{% url 'board:new_comment' article.id %}" method="POST">
+        {% csrf_token %}
+        {% bootstrap_form comment_form %}
+        <button class="btn btn-secondary">댓글 작성</button>
+    </form>
+{% else %}
+    로그인 하세요!
+{% endif %}
+
+{% comment %} {% if comments %}
+{% for comment in comments %}
+    <div>
+        {{ comment.content }} - {{ comment.author }}
+    </div>
+{% endfor %}
+
+{% else %}
+    <div>댓글이 없어요</div>
+
+{% endif %} {% endcomment %}
+
+<!-- 위의 주석 안의 코드 간단하게 나타내기 -->
+{% for comment in comments %}
+    <div>
+        {{ comment.content }} - {{ comment.author }}
+    </div>
+{% empty %}
+    <div>댓글이 없어요</div>
+{% endfor %}
+
 {% endblock content %}
