@@ -73,6 +73,12 @@ git push origin +master → '+'를 붙이면 에러를 무시하며 강제로 pu
 
 - [branch 생성하고 관리하기](https://github.com/xuansohx/study/blob/master/%EC%95%88%EC%86%8C%ED%98%84/%ED%95%99%EC%8A%B5%EB%82%B4%EC%9A%A9/190730.md)
 
+```
+git switch -c [branch name]
+```
+
+> branch를 생성하면서 접속
+
 - `.gitignore` 추가 및 적용 → [Eclipse를 개발 환경으로 사용하는 경우 등록 내용](https://github.com/xuansohx/study/blob/master/%EC%95%88%EC%86%8C%ED%98%84/.gitignore)
 
 ```
@@ -88,5 +94,13 @@ git push
 
 ```
 git reset HEAD 파일명
+```
+
+- Commit Message 수정
+
+```
+# 가장 최근 Commit Message 수정하기
+git commit --amend -m "수정할 메시지 입력"
+git push -f
 ```
 
