@@ -17,12 +17,14 @@
             <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
             <div class="card-body">
                 <textarea name="contents" class="form-control" rows="5"></textarea>
+                <input placeholder="Insert HashTag" type="text" class="form-control mt-3" name="hashtag">
                 <div class="input-group mt-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
                     </div>
                     <div class="custom-file">
-                        <input multiple name="image" type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                        <input multiple name="image" type="file" class="custom-file-input" id="inputGroupFile01"
+                            aria-describedby="inputGroupFileAddon01">
                         <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
                     </div>
                 </div>
@@ -42,7 +44,8 @@
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     {% for image in article.article_images %}
-                    <div class="carousel-item {%if image.image_thumbnail.url == article.article_images.first.image_thumbnail.url%}active{% endif %}">
+                    <div
+                        class="carousel-item {%if image.image_thumbnail.url == article.article_images.first.image_thumbnail.url%}active{% endif %}">
                         <img src="{{image.image_thumbnail.url}}" class="d-block w-100" alt="...">
                     </div>
                     {% endfor %}
@@ -62,14 +65,28 @@
                     <p class="card-text">{{article.contents}}</p>
                 </div>
                 <div class="text-center">
-                    <a href = "{% url 'edit' article.id %}" class = "btn btn-warning text-white"><i class = "fas fa-edit"></i></a>
-                    <a href = "{% url 'delete' article.id %}" class = "btn btn-danger text-white"><i class = "fas fa-trash-alt"></i></a>
+                    <div class="row float-right">
+                        <span class="text-muted">created by {{article.user.username}}</span>
+                    </div>
+                    {% if user in article.user_likes.all %}
+                    <button type="button" class="btn btn-secondary likes" data-article-id="{{article.id}}"><i
+                            class="fas fa-thumbs-up"></i></button>
+                    {% else %}
+                    <button type="button" class="btn btn-secondary likes" data-article-id="{{article.id}}"><i class="fas fa-thumbs-up"></i></button>
+                    {% endif %}
+                    {% if article.id == user_id %}
+                    <a href="{% url 'edit' article.id %}" class="btn btn-warning text-white"><i
+                            class="fas fa-edit"></i></a>
+                    <a href="{% url 'delete' article.id %}" class="btn btn-danger text-white"><i
+                            class="fas fa-trash-alt"></i></a>
+                    {% endif %}
                 </div>
             </div>
             <ul class="list-group list-group-flush" id="comment-list-group-{{article.id}}">
                 <li class="list-group-item">
                     <!-- 여기에서 댓글을 작성 ??? -->
-                    <form action="{% url 'comments' %}" method="POST" class="commentForm" id="commentForm-{{article.id}}">
+                    <form action="{% url 'comments' %}" method="POST" class="commentForm"
+                        id="commentForm-{{article.id}}">
                         <!-- input이 아닌 form에 id를 지정하여, form에서부터 찾아가도록 설정-->
                         <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
                         <input type="hidden" class="articleId" name="article_id" value="{{article.id}}">
@@ -91,13 +108,18 @@
                 <!-- 댓글은 여기에서 부터 -->
                 {% for comment in article.comments %}
                 <li class="list-group-item" id="comment-{{comment.id}}">
-                    <i class="fas fa-comment-dots"></i> 
-                    <span class="contents">{{comment.contents}}</span>
+                    <i class="fas fa-comment-dots"></i>
+                    <span>{{comment.user.username}} - </span><span class="contents">{{comment.contents}}</span>
                     <span class="float-right">
                         <!-- 댓글 수정 & 삭제 버튼 -->
                         <!-- data-contents="{{comment.contents}}" -> 버튼을 누르면 data 가져옴? -->
-                        <button data-contents="{{comment.contents}}" data-article-id="{{article.id}}" class="btn btn-warning text-white editComment" data-id="{{comment.id}}"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-danger text-white deleteComment" data-id="{{comment.id}}"><i class="fas fa-trash-alt"></i></button>
+                        {% if comment.user_id == user.id %}
+                        <button data-contents="{{comment.contents}}" data-article-id="{{article.id}}"
+                            class="btn btn-warning text-white editComment" data-id="{{comment.id}}"><i
+                                class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger text-white deleteComment" data-id="{{comment.id}}"><i
+                                class="fas fa-trash-alt"></i></button>
+                        {% endif %}
                     </span>
                 </li>
                 {% endfor %}
@@ -111,13 +133,38 @@
 
 {% block script %}
 <script>
-    // 여기부터 js code 작성
-    $(function(){
+// 여기부터 js code 작성
+
+$(function () {
+    $('.likes').on('click', function () {
+        var article_id = $(this).data('article_id');
+        var button = $(this);
+        $.ajax({
+            url: '{% url "likes" %}',
+            method: 'POST',
+            data: {
+                article_id: article_id,
+                csrfmiddlewaretoken: '{{csrf_token}}',
+            },
+            success: function (data) {
+                // '좋아요' 누를 때 색 변경하기
+                // button.removeClass('btn-secondary');
+                // button.addClass('btn-success');
+                // 두 가지를 종합한 toggle을 사용할 수도 있음
+                button.toggleClass(['btn-secondary', 'btn-success']);
+            },
+            error: function (data) {
+                if(data.status == 403) location.href = "{% url 'accounts:login' %}";
+                console.log("실패")
+            }
+        })
+    })
+        
     // create comment
     // form으로부터 내용을 받아서 코멘트를 작성(DB에 반영)
     // article 별로 있는 form으로부터
     // 'submit'이라는 이벤트에
-    $('.commentForm').on('submit',function(e){
+    $('.commentForm').on('submit', function (e) {
         e.preventDefault();
         // 해당 form에 있는 input 중에서 텍스트를 입력한 input으로부터
         // var contents = $(this).find('input.commentInput').val();
@@ -135,79 +182,80 @@
             method: 'POST',
             data: data, // data로 가져온 경우, 이름 안 쓰고 통째로 넘겨줌
             // 정상적인 callback이 오면, 위에서 받아둔 텍스트를 바탕으로
-            success: function(data){
-                if(data.method == "edit"){
-                    $('#commentForm-' + data.article_id + ' .formMethod').val("create");
-                    $('#comment-' + data.comment_id + ' .contents').text(data.comment)
-                    $('#comment-' + data.comment_id + ' .editComment').data('contents', data.comment);
-                } else {
-                // console.log("성공")
-                // console.log(data);
-                // data로부터 내용을 꺼내 저장
-                // `를 사용해서 data 불러옴
-                    var comment = `
+                success: function (data) {
+                    if (data.method == "edit") {
+                        $('#commentForm-' + data.article_id + ' .formMethod').val("create");
+                        $('#comment-' + data.comment_id + ' .contents').text(data.comment)
+                        $('#comment-' + data.comment_id + ' .editComment').data('contents',
+                            data.comment);
+                    } else {
+                        // console.log("성공")
+                        // console.log(data);
+                        // data로부터 내용을 꺼내 저장
+                        // `를 사용해서 data 불러옴
+                        var comment = `
                         <li class = "list-group-item" id="comment-${data.comment_id}">
                             <i class = "fas fa-comment-dots"></i>
-                            <span class="contents">${data.comment}</span>
+                            <span>${data.username} - </span><span class="contents">${data.comment}</span>
                             <span class = "float-right">
                                 <button data-contents="${data.comment}" data-article-id="${data.article_id}" data-id="${data.comment_id}" class="btn btn-warning text-while editComment"><i class = "fas fa-edit"></i></button>
                                 <button data-id="${data.comment_id}" class="btn btn-danger text-white deleteComment"><i class="fas fa-trash-alt"></i></button>
                             </span>
                         </li>
                     `
-                    // 새로운 댓글 element를 추가 (append 이용)
-                    $('#comment-list-group-'+data.article_id).append(comment);
+                        // 새로운 댓글 element를 추가 (append 이용)
+                        $('#comment-list-group-' + data.article_id).append(comment);
+                    }
+                },
+                error: function (data) {
+                    if (data.status == 401) location.href = '{% url "accounts:login" %}';
                 }
-            },
-            error: function(data){
-                console.log("실패")
-            }
         })
     })
-        
+
     // delete comment
     // 삭제버튼을 누르면 해당 element가 삭제
     // 삭제 버튼을 찾음
-    $(document).on('click', '.deleteComment', function(e){
+    $(document).on('click', '.deleteComment', function (e) {
         // 삭제 버튼에 click event 적용 (리스너와 핸들러)
         console.log("click");
         // 해당 element를 가지고 있는 유일한 값을 통하여
         console.log($(this).data());
         var comment_id = $(this).data('id');
-        // id를 가지고 DB에서 삭제될 수 있도록 서버에 요청
+            // id를 가지고 DB에서 삭제될 수 있도록 서버에 요청
         $.ajax({
             //url: '/insta/comments/' + comment_id + '/delete',
             // 아래 형태로 사용하기 위하여 urls.py 수정
             url: '{% url "delete_comment" %}',
             method: 'POST',
             data: {
-                comment_id : comment_id,
-                csrfmiddlewaretoken : "{{ csrf_token}}"
+                comment_id: comment_id,
+                csrfmiddlewaretoken: "{{ csrf_token}}"
             },
-            success: function(data){
+            success: function (data) {
                 console.log("성공"),
                 // 요청이 정상적으로 처리되면 해당 element를 삭제
                 $('#comment-' + comment_id).remove();
             },
-            error: function(data){
+            error: function (data) {
                 console.log("실패")
             }
         })
-        
+
     })
 
-    
+
     // update comment
     // 기존에 있던 내용을 해당 댓글을 다는 form으로 이동
     // 내용을 바꾸고 실제로 DB에 반영
 
     // edit 버튼을 누르면
-    $(document).on('click', '.editComment',function(){
+    $(document).on('click', '.editComment', function () {
         // 해당 댓글이 가지고 있던 내용을 
         var contents = $(this).data("contents");
         console.log(contents);
         // 입력창으로 이동
-        var article_id = $(this).data("article-id"); 
+        var article_id = $(this).data("article-id");
         var comment_id = $(this).data("id");
         $('#commentForm-' + article_id + ' .commentInput').val(contents);
         $('#commentForm-' + article_id + ' .formMethod').val("edit");
@@ -215,12 +263,8 @@
         // 바뀐 내용을 submit 하면 
         // 실제 서버에 반영
         // 바뀐 내용으로 해당 댓글을 변경 
-     
-    })
-       
 
-    
-    
     })
+})
 </script>
 {% endblock %}

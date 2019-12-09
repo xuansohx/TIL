@@ -9,7 +9,7 @@
     - 좋아요, 해시태그 : database relation(M:N)
     - M:N(다대다) -> ??? 
 ## Instagram
-### 1-1. django 프로젝트 생성
+### 1. django 프로젝트 생성
 > 실제 Instagram도 django로 되어있음
 ``` command
 > django-admin startproject instagram

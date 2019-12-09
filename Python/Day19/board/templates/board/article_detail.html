@@ -55,9 +55,12 @@
 
 <!-- 위의 주석 안의 코드 간단하게 나타내기 -->
 {% for comment in comments %}
+{% if comment.article_id == article.id %} 
     <div>
         {{ comment.content }} - {{ comment.author }}
     </div>
+{% endif %}
+
 {% empty %}
     <div>댓글이 없어요</div>
 {% endfor %}
