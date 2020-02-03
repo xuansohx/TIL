@@ -1,5 +1,7 @@
 ## Today I Learned :book:
 
+### 1. 4차 산업혁명 선도인력양성 (T4IR)
+
 - **과정명 :** 빅데이터를 활용한 IoT 시스템 개발(feat. 커넥티드카:oncoming_automobile:) 
 - **교육일정 :** 2019.05.10.Fri ~ 2019.12.13.Fri / 1일 8H 씩 총 149일
 - **교육내용 :** 
@@ -23,12 +25,21 @@
 - Network : Thread / Synchronized / Stream / Socket
 - CAN 
 
+**[ 4 ] Projects**
+
+:clapper: **Mini Project** : Spring MVC와 mybatis를 활용한 문화콘텐츠 정보 제공 및 리뷰 공유 웹 사이트 ( [SHOWer](https://github.com/xuansohx/SHOWer) )
+
+:car: **Final Project** : 자율 주행 기반 커넥티드카 셰어링 서비스 선행 개발  ( [DeCoCa](https://github.com/xuansohx/FinalProject) )
+
 <br>
 
-:clapper: **Mini Project** : Spring MVC와 mybatis를 활용한 문화콘텐츠 정보 제공 및 리뷰 공유 웹 사이트 ▶ [SHOWer](https://github.com/xuansohx/SHOWer)
+- Python : Django Web Framework
 
-:car: **Final Project** : 자율 주행 기반 커넥티드카 셰어링 서비스 선행 개발 ▶ [DeCoCa](https://github.com/xuansohx/FinalProject)
+ :shirt: ​**Hackathon** : 날씨 별 코디 추천 OOTD(Outfit Of The Day) 웹 서비스 ( [OOTD](https://github.com/xuansohx/Hackathon-OOTD) )
 
 <br>
 
-- Python : (:wavy_dash: ing) 
+### 2. study C++
+
+> 참고 도서 : 윤성우의 열혈 C++ 프로그래밍
+
