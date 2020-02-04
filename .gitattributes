@@ -1,11 +1,11 @@
 # exclude CSS
 
-실습코드/Linux/day53_SHOWer_VMware_Oracle/web/css/ linguist-vendored
-실습코드/Linux/day53_SHOWer_VMware_Oracle/web/vendor/ linguist-vendored
+실습코드/Linux/day53_SHOWer_VMware_Oracle/web/css/* linguist-vendored
+실습코드/Linux/day53_SHOWer_VMware_Oracle/web/vendor/* linguist-vendored
 
-실습코드/Linux/day53_SHOWer_VMware_MariaDB/web/css/ linguist-vendored
-실습코드/Linux/day53_SHOWer_VMware_MariaDB/web/vendor/ linguist-vendored
+실습코드/Linux/day53_SHOWer_VMware_MariaDB/web/css/* linguist-vendored
+실습코드/Linux/day53_SHOWer_VMware_MariaDB/web/vendor/* linguist-vendored
 
-실습코드/R/day72_RProject/web/css/ linguist-vendored
-실습코드/R/day72_RProject/web/startbootstrap-sb-admin-2-gh-pages/ linguist-vendored
-실습코드/R/day72_RProject/web/vendor/ linguist-vendored
+실습코드/R/day72_RProject/web/css/* linguist-vendored
+실습코드/R/day72_RProject/web/startbootstrap-sb-admin-2-gh-pages/* linguist-vendored
+실습코드/R/day72_RProject/web/vendor/* linguist-vendored
