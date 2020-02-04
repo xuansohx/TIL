@@ -104,3 +104,23 @@ git commit --amend -m "수정할 메시지 입력"
 git push -f
 ```
 
+- `.gitattributes` 적용하기
+
+> `.gitignore`는 버전관리를 하지 않을 파일을 지정하는 것이라면, `.gitattributes`는 파일에 속성을 부여하는 것 -> 이를 활용하여 사용하는 Repository 내 언어의 통계를 관리
+
+```
+# .gitattributes 파일 만듦
+touch .gitattributes
+```
+
+```
+# .gitattributes 파일에 내가 배제하고 싶은 폴더 혹은 파일의 경로를 지정하고 속성을 부여
+
+code/codi/static/* linguist-vendored
+
+code/accounts/templates/* linguist-vendored
+code/codi/templates/* linguist-vendored
+```
+
+> bootstrap의 적용으로 실제 내가 작성한 코드가 아닌 css의 파일이 높게 집계되는 것을 관리할 수 있음
+
